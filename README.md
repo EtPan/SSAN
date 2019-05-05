@@ -21,6 +21,7 @@ Please cite our paper if you find it useful for your research.
   ISSN = {2072-4292},
   DOI = {10.3390/rs11080963}
 }
+
 ```
 
 ## Installation
@@ -35,7 +36,7 @@ Please cite our paper if you find it useful for your research.
 
 Download the [Pavia Center dataset](http://www.ehu.eus/ccwintco/uploads/e/e3/Pavia.mat) and its corresponding [ground-truth map](http://www.ehu.eus/ccwintco/uploads/5/53/Pavia_gt.mat).
 
-### Usage
+## Usage
 
 **1. Change the file path**
 
@@ -51,4 +52,4 @@ Download the [Pavia Center dataset](http://www.ehu.eus/ccwintco/uploads/e/e3/Pav
 
 **4. Testing and Evaluation**
 
-1. Run `ssan_test.py`.
+​	Run `ssan_test.py`.
