@@ -196,7 +196,7 @@ with tf.Session() as sess:
     sess.run(init)
     merged = tf.summary.merge_all()
     train_summary_writer = tf.summary.FileWriter(
-        '/data/pan/data/paviac/merge/model/loss_record', sess.graph)
+        './model/loss_record', sess.graph)
     for step in range(1, training_steps+1):
         batch_spe_x, batch_spa_x, batch_y = data.train.next_batch(batch_size)
         batch_spe_x = batch_spe_x.reshape((batch_size, timesteps, num_input))
@@ -204,7 +204,7 @@ with tf.Session() as sess:
                                       Y: batch_y, keep_prob: 1.0})
         if step % display_step == 0 or step == 1:
             summary, loss, acc = sess.run([merged, loss_op, accuracy], feed_dict={spe_X: batch_spe_x,spa_X: batch_spa_x,
-                                                                 Y: batch_y, keep_prob: 1.0})
+                                                                 Y: batch_y, keep_prob:dropout})
             print("Step " + str(step) + ", Minibatch Loss= " + \
                   "{:.4f}".format(loss) + ", Training Accuracy= " + \
                   "{:.3f}".format(acc))
@@ -215,14 +215,14 @@ with tf.Session() as sess:
             val_batch_spe_x, val_batch_spa_x, val_batch_y = data.valid.next_batch(batch_sizeall)
             val_batch_spe_x = val_batch_spe_x.reshape((val_batch_spe_x.shape[0], timesteps, num_input))
             val_acc = sess.run(accuracy, feed_dict={spe_X: val_batch_spe_x, spa_X: val_batch_spa_x, 
-                                                    Y: val_batch_y, keep_prob: 1.0})
+                                                    Y: val_batch_y, keep_prob:dropout})
             # valid_summary_writer.add_summary(summary, step)
             print("valid accuracy = " + "{:.3f}".format(val_acc))
             if val_acc > best:           
                 best = val_acc
                 print("Step " + str(step))
                 filename = ('ssan030.ckpt')
-                filename = os.path.join('/data/pan/data/paviac/merge/model/',filename)
+                filename = os.path.join('./model/',filename)
                 saver.save(sess, filename)
             print("best valid accuracy = " + "{:.3f}".format(best))
     print("Optimization Finished!")
