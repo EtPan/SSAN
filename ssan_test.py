@@ -17,12 +17,12 @@ batch_size  = 128
 prediction = np.zeros((1, num_classes), dtype=np.int32)
 true_y     = np.zeros((1, num_classes), dtype=np.int32)
 
-saver = tf.train.import_meta_graph('/data/pan/data/paviac/merge/model/'
+saver = tf.train.import_meta_graph('./model/'
                                    'ssan030.ckpt.meta')
 # Start testing
 with tf.Session() as sess:
-    saver.restore(sess, '/data/pan/data/paviac/merge/model/'
-                                   'ssan030.ckpt')
+    saver.restore(sess, './model/'
+                        'ssan030.ckpt')
     spe_X = sess.graph.get_operation_by_name('spe_X').outputs[0]
     spa_X = sess.graph.get_operation_by_name('spa_X').outputs[0]
     y     = sess.graph.get_tensor_by_name('Softmax:0')
@@ -42,12 +42,12 @@ print("Accuracy for Testing sets:",acc)
 
 
 
-saver = tf.train.import_meta_graph('/data/pan/data/paviac/merge/model/'
+saver = tf.train.import_meta_graph('./model/'
                                    'ssan030.ckpt.meta')
 prediction = np.zeros((1, num_classes), dtype=np.int32)
 with tf.Session() as sess:
-    saver.restore(sess, '/data/pan/data/paviac/merge/model/'
-                                   'ssan030.ckpt')
+    saver.restore(sess, './model/'
+                        'ssan030.ckpt')
     spe_X = sess.graph.get_operation_by_name('spe_X').outputs[0]
     spa_X = sess.graph.get_operation_by_name('spa_X').outputs[0]
     y     = sess.graph.get_tensor_by_name('Softmax:0')
