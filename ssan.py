@@ -201,7 +201,7 @@ with tf.Session() as sess:
         batch_spe_x, batch_spa_x, batch_y = data.train.next_batch(batch_size)
         batch_spe_x = batch_spe_x.reshape((batch_size, timesteps, num_input))
         sess.run(train_op, feed_dict={spe_X: batch_spe_x, spa_X: batch_spa_x, 
-                                      Y: batch_y, keep_prob: 1.0})
+                                      Y: batch_y, keep_prob: dropout})
         if step % display_step == 0 or step == 1:
             summary, loss, acc = sess.run([merged, loss_op, accuracy], feed_dict={spe_X: batch_spe_x,spa_X: batch_spa_x,
                                                                  Y: batch_y, keep_prob:dropout})
@@ -215,7 +215,7 @@ with tf.Session() as sess:
             val_batch_spe_x, val_batch_spa_x, val_batch_y = data.valid.next_batch(batch_sizeall)
             val_batch_spe_x = val_batch_spe_x.reshape((val_batch_spe_x.shape[0], timesteps, num_input))
             val_acc = sess.run(accuracy, feed_dict={spe_X: val_batch_spe_x, spa_X: val_batch_spa_x, 
-                                                    Y: val_batch_y, keep_prob:dropout})
+                                                    Y: val_batch_y, keep_prob:1.0})
             # valid_summary_writer.add_summary(summary, step)
             print("valid accuracy = " + "{:.3f}".format(val_acc))
             if val_acc > best:           
