@@ -14,8 +14,8 @@ num_input   = 1
 timesteps   = 102
 batch_size  = 128
 
-prediction = np.zeros((1, num_classes), dtype=np.int32)
-true_y     = np.zeros((1, num_classes), dtype=np.int32)
+prediction = np.zeros((0, num_classes), dtype=np.int32)
+true_y     = np.zeros((0, num_classes), dtype=np.int32)
 
 saver = tf.train.import_meta_graph('./model/'
                                    'ssan030.ckpt.meta')
@@ -44,7 +44,7 @@ print("Accuracy for Testing sets:",acc)
 
 saver = tf.train.import_meta_graph('./model/'
                                    'ssan030.ckpt.meta')
-prediction = np.zeros((1, num_classes), dtype=np.int32)
+prediction = np.zeros((0, num_classes), dtype=np.int32)
 with tf.Session() as sess:
     saver.restore(sess, './model/'
                         'ssan030.ckpt')
