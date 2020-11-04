@@ -106,6 +106,27 @@ class DataSet(object):
     hsi_batch_label = DenseToOneHot(hsi_batch_label, num_classes=num_classes)
     return hsi_batch_patch,hsi_batch_pca,hsi_batch_label,
 
+  def next_batch_test(self, batch_size):
+    start = self._index_in_epoch
+    self._index_in_epoch += batch_size
+    if self._index_in_epoch > self._num_examples:
+        self._index_in_epoch = self._num_examples
+    end = self._index_in_epoch
+    hsi_batch_pca = np.zeros((end-start, window_size, window_size, num_components), dtype=np.float32)
+    col_pca = data_pca.shape[1]
+    hsi_batch_patch = np.zeros((end-start, input_dimension), dtype=np.float32)
+    col = data_in.shape[1]
+    for q1 in range(end-start):
+      hsi_batch_patch[q1] = normdata[(self._images[start + q1] // col),(self._images[start + q1] % col),:]
+      hsi_batch_pca[q1] = padded_data[(self._images[start + q1] // col_pca):
+                                          ((self._images[start + q1] // col_pca) + window_size),
+                              (self._images[start + q1] % col_pca):
+                              ((self._images[start + q1] % col_pca) + window_size), :]
+    block = self._images[start:end]
+    hsi_batch_label = GT[block]
+    hsi_batch_label = DenseToOneHot(hsi_batch_label, num_classes=num_classes)
+    return hsi_batch_patch,hsi_batch_pca,hsi_batch_label
+
 def ReadDatasets():
     class DataSets(object):
         pass
