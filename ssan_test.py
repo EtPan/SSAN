@@ -28,8 +28,11 @@ with tf.Session() as sess:
     y     = sess.graph.get_tensor_by_name('Softmax:0')
     keep_prob = sess.graph.get_operation_by_name('keep_prob').outputs[0]
     for index in range((data.test._num_examples // batch_size) + 1):
-        batch_spe_x, batch_spa_x, Y = data.test.next_batch(batch_size)
-        batch_spe_x = batch_spe_x.reshape((batch_size, timesteps, num_input))
+        batch_spe_x, batch_spa_x, Y = data.test.next_batch_test(batch_size)
+        if index == (data.test._num_examples // batch_size):
+            batch_spe_x = batch_spe_x.reshape(((data.test._num_examples % batch_size), timesteps, num_input))
+        else:
+            batch_spe_x = batch_spe_x.reshape((batch_size, timesteps, num_input))
         pre_pro     = sess.run(y, feed_dict={spe_X: batch_spe_x, spa_X: batch_spa_x, keep_prob: 1.0})
         prediction  = np.concatenate((prediction, pre_pro), axis=0)
         true_y      = np.concatenate((true_y, Y), axis=0)
@@ -53,8 +56,11 @@ with tf.Session() as sess:
     y     = sess.graph.get_tensor_by_name('Softmax:0')
     keep_prob = sess.graph.get_operation_by_name('keep_prob').outputs[0]
     for index in range((data.all._num_examples // batch_size) + 1):
-        batch_spe_x, batch_spa_x, _ = data.all.next_batch(batch_size)
-        batch_spe_x = batch_spe_x.reshape((batch_size, timesteps, num_input))
+        batch_spe_x, batch_spa_x, Y = data.all.next_batch_test(batch_size)
+        if index == (data.all._num_examples // batch_size):
+            batch_spe_x = batch_spe_x.reshape(((data.all._num_examples % batch_size), timesteps, num_input))
+        else:
+            batch_spe_x = batch_spe_x.reshape((batch_size, timesteps, num_input))
         pre_pro     = sess.run(y, feed_dict={spe_X: batch_spe_x, spa_X: batch_spa_x, keep_prob: 1.0})
         prediction  = np.concatenate((prediction, pre_pro), axis=0)
 predict_label = np.argmax(prediction, 1) + 1
